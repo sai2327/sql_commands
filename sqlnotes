@@ -1,0 +1,134 @@
+SQL Commands with What They Do + Examples
+SQL Commands Type
+====================================================================================================
+-> DDL (Data Definition Language): Defines and modifies database structures.
+-> DML (Data Manipulation Language): Handles data manipulation (insert, update, delete).
+-> TCL (Transaction Control Language): Manages transactions.
+-> DCL (Data Control Language): Controls access to data.
+
+1) DDL Commands - CARD-T
+====================================================================================================
+C -> CREATE: Creates new tables or other database objects.
+ Example: CREATE TABLE employee(emp_id INT, name VARCHAR(50));
+A -> ALTER: Modifies the structure of an existing table (add/modify/drop columns).
+ Example: ALTER TABLE employee ADD email VARCHAR(50);
+R -> RENAME: Changes the name of a table or column.
+ Example: RENAME employee TO emp_data;
+D -> DROP: Deletes a table or object permanently.
+ Example: DROP TABLE emp_data;
+T -> TRUNCATE: Deletes all rows in a table, but keeps the structure.
+ Example: TRUNCATE TABLE employee;
+ALTER Details:
+ ADD: Adds a new column.
+ Example: ALTER TABLE employee ADD age INT;
+ MODIFY: Changes column datatype or size.
+ Example: ALTER TABLE employee MODIFY name VARCHAR(100);
+ RENAME COLUMN: Changes column name.
+ Example: ALTER TABLE employee RENAME COLUMN name TO full_name;
+ DROP COLUMN: Deletes a column.
+ Example: ALTER TABLE employee DROP COLUMN email;
+
+2) DML Commands
+====================================================================================================
+INSERT: Adds a new row of data into a table.
+ Example: INSERT INTO employee VALUES(1, 'Alice');
+UPDATE: Modifies existing data in a table.
+ Example: UPDATE employee SET name = 'Bob' WHERE emp_id = 1;
+DELETE: Removes one or more rows from a table.
+ Example: DELETE FROM employee WHERE emp_id = 1;
+SELECT: Retrieves data from one or more tables.
+ Example: SELECT * FROM employee;
+ Example: SELECT name FROM employee;
+
+3) Constraints
+====================================================================================================
+NOT NULL: Ensures a column cannot have NULL values.
+ Example: emp_id INT NOT NULL
+UNIQUE: Ensures all values in a column are unique.
+ Example: email VARCHAR(100) UNIQUE
+CHECK: Ensures the value meets a specific condition.
+ Example: CHECK (salary > 0)
+PRIMARY KEY: Combines NOT NULL and UNIQUE to uniquely identify rows.
+ Example: PRIMARY KEY(emp_id)
+FOREIGN KEY: Links a column to a primary key in another table.
+ Example: FOREIGN KEY(dept_id) REFERENCES department(dept_id)
+
+4) SELECT with Conditions
+====================================================================================================
+OR: Returns rows where either condition is true.
+ Example: SELECT * FROM student WHERE fee = 20000 OR section = 1;
+AND: Returns rows where both conditions are true.
+ Example: SELECT * FROM student WHERE year = 2 AND branch = 'CSE';
+IN: Returns rows where column value matches any value in list.
+ Example: SELECT * FROM student WHERE branch IN ('CSE', 'DS');
+NOT IN: Returns rows where value is not in list.
+ Example: SELECT * FROM student WHERE branch NOT IN ('CSE', 'DS');
+
+5) CASE Statements
+====================================================================================================
+CASE: Returns specific values based on conditions (like if-else logic).
+SELECT Example:
+SELECT id, name, branch,
+ CASE branch
+ WHEN 'CSE' THEN 'Computer Science'
+ ELSE 'Other'
+ END AS branch_fullform
+FROM student;
+UPDATE Example:
+UPDATE employee SET salary =
+ CASE
+ WHEN department = 'HR' THEN salary * 1.10
+ ELSE salary
+ END;
+
+6) Aggregate Functions
+====================================================================================================
+Functions that work on multiple rows:
+SUM: Total of a column
+COUNT: Number of rows
+MAX: Highest value
+MIN: Lowest value
+AVG: Average value
+GROUP BY: Groups rows with same values.
+HAVING: Filters groups after GROUP BY.
+ORDER BY: Sorts results.
+Example:
+SELECT department, COUNT(*) AS emp_cnt
+FROM employee
+GROUP BY department
+HAVING emp_cnt > 10
+ORDER BY emp_cnt DESC;
+
+7) Joins
+====================================================================================================
+Combines rows from two or more tables based on a related column.
+INNER JOIN: Returns only matching rows from both tables.
+ Example:
+ SELECT e.emp_id, e.name, d.dept_name
+ FROM employee e
+ INNER JOIN department d ON e.dept_id = d.dept_id;
+LEFT JOIN: Returns all rows from left table and matched rows from right.
+ Example:
+ SELECT e.emp_id, e.name, d.dept_name
+ FROM employee e
+ LEFT JOIN department d ON e.dept_id = d.dept_id;
+RIGHT JOIN: Returns all rows from right table and matched rows from left.
+ Example:
+ SELECT e.emp_id, e.name, d.dept_name
+ FROM employee e
+ RIGHT JOIN department d ON e.dept_id = d.dept_id;
+FULL JOIN: Returns all rows when there is a match in one of the tables.
+ Example:
+ SELECT e.emp_id, e.name, d.dept_name
+ FROM employee e
+ FULL JOIN department d ON e.dept_id = d.dept_id;
+SELF JOIN: Joins a table with itself.
+ Example:
+ SELECT e1.name AS Employee, e2.name AS Manager
+ FROM employee e1
+ JOIN employee e2 ON e1.manager_id = e2.emp_id;
+Theta Join: Uses a condition other than equality.
+ Example:
+ SELECT e.emp_id, e.name, d.dept_name
+ FROM employee e
+ JOIN department d ON e.dept_id != d.dept_id
