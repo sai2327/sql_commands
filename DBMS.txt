@@ -1,0 +1,266 @@
+Database Management System:
+------------------------
+certifications to be done : 
+-------------------------
+
+Oracle Academy : (coruse completion )
+
+1. database foundations learner
+2. database programming learner
+3. PL/SQL learner
+
+Oracle university (proctored certified)
+
+-> Oracle foundations Associate (65% to clear the exam) (proctored)
+
+-----------------------------------------------------------------------------------------------------------
+
+ RDBMS(relational databases) : data is stored in the form of tables
+  - MySQL
+  - Oracle
+  - SQLServer
+  - postgr 
+
+NoSQL database
+--------------------------------------------------------------------------------------------------------------
+
+Software required : 
+------------------
+database : oracle 
+vs code
+oracle sql developer
+---------------------------------------------------------------------------------------------------------------
+relational databases : Data is stored in form of  tables.
+SQL :  structured Query Language 
+
+SQL commmands : 
+1. DDL commmands: Data Defination Language
+  -> these commands help us at a object level 
+    CARD-T
+      - CREATE: Is used to creare database object
+          syntax : -  CREATE TABLE table_name(field_name1 datatype, field_name2 datatype)
+          example : - CREATE TABLE employee(emp_id NUMBER, name VARCHAR2(50))
+
+      - ALTER: used to make changes(structre leve) or the create table
+              -> ALTER+ADD
+        using  alter to add a new column:
+                 ALTER TABLE table_name ADD new_col_name  datatype;
+        using alter to add more than one coulumn:
+
+                 ALTER TABLE table_name ADD (new_col1 datatype,new_col2 datatype)
+
+              -> ALTER+MODIFY
+        used to change the properties of feilds created
+        using alter to modify size of name in one table 
+        syntax : ALTER TABLE table_name modify(col change_made)
+
+
+              -> ALTER+RENAME : rename coulumns in existing table 
+              syntax : ALTER TABLE table_name  RENAME COLUMN old_name TO new_name;
+            
+              -> ALTER+DROP: to drop coulumns 
+              syntax : ALTER TABLE table_name DROP coulumn_name
+                       ALTER TABLE table_name DROP(col1,col2,col3...);
+
+      - RENAME: used to rename objects
+              syntax : RENAME old_name to new_name;
+
+      - DROP :  used to delete an object entirely from the database
+                syntax : DROP TABLE table_name;
+
+      - TRUNCATE: Is used to clear the content of the table by keeping the structre intact
+                  syntax: TRUNCATE TABLE table_name;
+
+      NUMBER--> int float
+      VARCHAR2(n) n(size) ----> name VARCHAR2(50)
+      DESC table_name -> shows the feilds present.
+        command to find DATE FROMAT : SELECT VALUE 
+                                      FROM nls_session_parameters WHERE paramete='NLS_DATE_FORMAT';
+----------------------------------------------------------------------------------------------------------------
+2. DML commmands: Data Manipulation Language
+  -> these commands help us at a table level
+    
+    - INSERT---> used to insert the data into tables
+        syntax:INSERT INTO table_name VALUES(value1,value2...);
+        example: INSERT INTO employee VALUES(1,'Alice');
+                 INSERT INTO employee VALUES(2,'Bob');
+        --> for inserting multiple rows at once write:
+        INSERT INTO table_name VALUES
+        (row 1),(row 2), (row 3);
+--------------------------------------------------
+
+    - UPDATE---> used to update the data in the existing fields
+      syntax: UPDATE table_name SET coulumn_name=value
+    - DELETE---> used to delete data 
+
+---------------------------------------------------
+    - SELECT--->(sometimes called as DQL)
+        Fetch the data from databse objects 
+        Data Query Language
+      syntax : SELECT * FROM table_name
+               SELECT col_name1,col_name2 FROM table_name
+
+      example: SELECT * FROM employee;
+               SELECT name FROM employee;
+
+-----------------------------------------------------------------------------------------------------------------
+3. TCL commmands
+4. DCL commmands
+----------------------------------------------------------------------------------------------------------------
+integrity Constraints: 
+
+The constrains made for maintaing data integrity across your tables 
+1. NOT NULL : dosn't allow any value to be null 
+2. UNIQUE : can't contain any duplicate values
+3. CHECK :  used to check a condition before performing insert/update on the column specified
+            it ennsures that the data is not inserted/updated if condition is violated.
+4. PRIMARY KEY :  it contains 2 constraints included(NOT NULL + UNIQUE)
+
+5. FORIGEN KEY : To reduce the re use of multiple values of  same data in different rows of a table we use 
+                  key of another table as refference in main table.
+
+----------------------------------------------------------------------------------------------------------------
+                                    CLAUSES
+
+Distinct : It is used to get distinct values from a single column or multiple columns
+           syntax : SELECT DISTINCT  column_name from table_name;
+           Ex : SELECT DISTINCT  department from employee;
+
+  -> using disticnt on multiple columns makes sure the combinatino of columns used is never repated interms of 
+      data.
+      ex: SELECT DISTINCT department,age FROM employee;
+----------------------------------------------------------------------------------------------------------------
+
+ IN/NOT IN : used for an alternative for logical 'OR' 
+
+        ex: select * from employee 
+            where department IN ('SW','HR);
+
+            where department NOT IN ('SW','HR);
+------------------------------------------------------------------------------------------------------------------
+
+Order By :  It is use to order the data in either ascending order or decending order based on 1 coulumn 
+            or multiple columns by default oder by oders data in ascending order only for decending order we
+            use the DESC keyword
+            -> in ascending order NULL values go to the end of table
+            -> in descending order NULL values come on the top of table
+
+          Ex : Select * from employee 
+              ORDER BY age; 
+
+              Select * from employee
+              order by age DESC;  
+-------------------------------------------------------------------------------------------------------------
+
+sum() : is used to find the sum of all the values present under a column works on only numerical valeus only
+        Ex: SELECT SUM(salary) from employee
+            where department='HR';
+--------------------------------------------------------------------------------------------------------------
+
+Count() : count is used to give how many values are there under any column or to get a count of something
+        Ex: SELECT count(department) from employee 
+            WHERE department='HR'
+            using count dosn't count null 
+----------------------------------------------------------------------------------------------------------
+
+Count(*) : counts the number of rows in the coulumn including the null values 
+          Ex: SELECT count(*) from employee;
+------------------------------------------------------------------------------------------------------------------
+
+Max-min() : used to find the maximum and minimum value in the column
+-----------------------------------------------------------------------------------------------------------------
+GROUP BY : 
+used to group data based on either one column or multiple columns mostly GROUP BY is used with AGGERGATE function
+like sum()
+        Ex: select department, count(*) as emp_count
+            FROM employee 
+            GROUP BY department;
+All the coulumns used in select statement of a group by query must also be used in a groupby clause or must be
+  Aggregated.
+          select department, max(salary),min(salary),sum(salary)
+          from employees
+          group by department;
+  -- we need to find out how many employees are there from each department earning more than 60K
+     syntax :  SELECT -> FROM - WHERE -> GROUP BY -> ORDER BY
+
+      Ex:    select department, count(*) as emp_count
+              from employee
+              where salary>6000
+              GROUP BY department
+              order by emp_count;
+GROUP BY on multiple coulumns
+      select department,gender,count(*)
+      from employee
+      group by department, gender;
+
+-----------------------------------------------------------------------------------------------------------------
+Having : having is like what WHERE does to individual rows, HAVING is used to filter the group Where is used to 
+filter the rows 
+
+ Ex: select department, count(*) as emp_count
+ from employee
+ group by department
+ having emp_cnt>27
+
+ Select -> from -> where -> groupby -> having -> order by;
+ --------------------------------------------------------------------------------------------------------------
+
+ Types of Joins in SQL 
+1. Inner Joins : combines rows from two tables only when the join condition is true 
+        syntax : SELECT col1,col2.... FROM 
+                 TABLE1 JOIN TABLE2
+                 ON TABLE1.some_column=TABLE2.some_column;
+2. Outter
+          - LEFT Outter
+          - RIGHT Outter
+          - FULL Outter
+3. Self   
+4. thetha
+5. cross
+6. natural 
+-----------------------------------------------------------------------------------------------------------------
+ER Modelling:
+------------
+Serves as a visual representation for your database schema.
+
+--
+drawio -- is used to draw diagrams.
+
+- it is a high level conceptual model,used to define and design structures
+--it shows the data visually
+-- it can be done using ER diagrams
+
+
+Entity:
+	The thing which we can describe some attributes is called entity.
+	Eg:
+	Representation:Rectangle
+Types of Entity:
+	->Strong Entity:
+			it is uniquely identified by it's own attributes.
+	Eg:student is a strong entity because every student have an unique Roll.no.
+
+  -> weak Entity : 
+         it is an Entity that cannot be uniquely identified by its own attriutes alone instead it relaises
+         on strong entity
+      -   cannot exist without strong entity
+      -   it uses partial key along with the key from strong entiy to be uniquely identified 
+      -   represented using a doubble Rectangle.
+
+  -> Associate entity : It is a special entity that is used to present many to many relationships
+     between two or more entities 
+---------------------------------------------------------------------------------------------------------------
+
+Subqueries : writing of a query inside of a query is called as Subquery.
+
+Types : 
+    1. scalar :   
+    2. Single coulumn multiple row
+    3. multiple column and multiple row
+    4. Co-related
+  
+
+            
+
+
+
